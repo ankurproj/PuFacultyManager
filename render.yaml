@@ -1,0 +1,24 @@
+services:
+  # Backend API Service
+  - type: web
+    name: professor-publication-backend
+    env: node
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && npm start
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://admin:Mk8921550964@cluster1.bp5bk.mongodb.net/CompScience?retryWrites=true&w=majority&appName=Cluster1
+      - key: TOKEN
+        value: asldmfalwekawoeirjsadfnzxcvaoeihrfkasmwaerlkjs
+      - key: NODE_ENV
+        value: production
+
+  # Frontend Static Site
+  - type: web
+    name: professor-publication-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://professor-publication-backend.onrender.com
