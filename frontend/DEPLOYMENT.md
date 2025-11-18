@@ -1,34 +1,34 @@
-# Professor Publication System - Frontend
+# Professor Publication System - Frontend Deployment (Netlify)
 
-## Render Deployment Instructions
+## Netlify Setup
 
-### 1. Create New Static Site
+### 1. Create New Site from Git
 - Connect your GitHub repository
-- Select "frontend" folder as root directory
-- Build Command: `npm run build`
-- Publish Directory: `build`
+- Base directory: `frontend`
+- Build command: `npm run build`
+- Publish directory: `build`
 
 ### 2. Environment Variables
-Set in Render dashboard:
+Set in Netlify Site settings → Build & deploy → Environment:
 
 ```
-REACT_APP_API_URL=https://your-backend-service-name.onrender.com
+REACT_APP_API_URL=https://your-api.up.railway.app
 ```
 
-**Important**: Replace `your-backend-service-name` with your actual backend service name from Render.
-
-### 3. Build Settings
-- **Build Command**: `npm install && npm run build`
-- **Publish Directory**: `build`
-- **Node Version**: 18 (or latest LTS)
+### 3. SPA Routing
+`_redirects` has been added at `frontend/public/_redirects` with:
+```
+/* /index.html 200
+```
 
 ### 4. Post-Deployment
-1. Update `REACT_APP_API_URL` with your backend service URL
-2. Trigger a rebuild
-3. Test all functionality
+1. Confirm CORS on backend allows your Netlify domain
+2. Trigger a rebuild if you update env vars
+3. Verify API calls hit the Railway URL (Network tab)
 
 ## Local Development
-```bash
+```powershell
+cd "D:\PROJECT\PU FACULTY MANAGEMENT\frontend"
 npm install
 npm start    # Development server on localhost:3000
 npm run build # Production build
@@ -36,4 +36,4 @@ npm run build # Production build
 
 ## Environment Files
 - `.env` - Development (localhost:5000)
-- `.env.production` - Production (update with Render backend URL)
+- `.env.production` - Production (set to Railway backend URL)

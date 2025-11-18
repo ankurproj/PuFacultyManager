@@ -14,13 +14,30 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+// Dynamic CORS allowlist via env (comma-separated), plus common dev defaults
+const allowedOriginEnv = process.env.ALLOWED_ORIGINS || '';
+const allowedOrigins = [
+    'http://localhost:3000',
+    /\.netlify\.app$/,
+    /\.vercel\.app$/
+];
+
+allowedOriginEnv
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .forEach(origin => allowedOrigins.push(origin));
+
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://professorpublication-production.up.railway.app',
-        /\.netlify\.app$/,
-        /\.vercel\.app$/
-    ],
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true); // Allow same-origin/non-browser requests
+        const isAllowed = allowedOrigins.some(o => {
+            if (o instanceof RegExp) return o.test(origin);
+            return o === origin;
+        });
+        if (isAllowed) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
 }));
 app.use(express.json());

@@ -1,33 +1,46 @@
-# Professor Publication System - Backend
+# Professor Publication System - Deployment
 
-## Render Deployment Instructions
+This project deploys best as:
+- Backend API: Railway
+- Frontend (React/CRA): Netlify
 
-### 1. Create New Web Service
-- Connect your GitHub repository
-- Select "Backend" folder as root directory
-- Environment: Node
+## Backend on Railway
 
-### 2. Build & Start Commands
-- **Build Command**: `npm install`
-- **Start Command**: `npm start`
-
-### 3. Environment Variables
-Set these in Render dashboard:
-
+1. Create New Project → Deploy from GitHub → select this repo
+2. Project settings (Monorepo):
+	- Root directory: `Backend`
+	- Build command: `npm install`
+	- Start command: `npm start`
+3. Environment variables:
 ```
-MONGO_URI=mongodb+srv://admin:Mk8921550964@cluster1.bp5bk.mongodb.net/CompScience?retryWrites=true&w=majority&appName=Cluster1
-TOKEN=asldmfalwekawoeirjsadfnzxcvaoeihrfkasmwaerlkjs
+MONGO_URI=<your-mongodb-atlas-uri>
+TOKEN=<your-jwt-secret>
 PORT=5000
+ALLOWED_ORIGINS=https://<your-frontend-domain>
 ```
+4. Health check: `/` (returns "Server is running")
+5. Copy the public URL (e.g., `https://your-api.up.railway.app`)
 
-### 4. Health Check
-The service will be available at: `https://your-service-name.onrender.com`
+## Frontend on Netlify
 
-Test endpoint: `https://your-service-name.onrender.com/` should return "Server is running"
+1. New site from Git → select this repo
+2. Build settings:
+	- Base directory: `frontend`
+	- Build command: `npm run build`
+	- Publish directory: `build`
+3. Environment variables:
+```
+REACT_APP_API_URL=https://your-api.up.railway.app
+```
+4. SPA routing: `_redirects` is already added at `frontend/public/_redirects`
+5. Deploy and test the site URL
 
 ## Local Development
-```bash
-npm install
-npm run dev  # Uses nodemon for development
-npm start    # Production start
+```powershell
+cd "D:\PROJECT\PU FACULTY MANAGEMENT\Backend"; npm install; npm run dev
+cd "D:\PROJECT\PU FACULTY MANAGEMENT\frontend"; npm install; npm start
 ```
+
+## Notes
+- CORS is now controlled via `ALLOWED_ORIGINS` (comma-separated)
+- Never commit real `.env`. Use `Backend/.env.example` as a template.
