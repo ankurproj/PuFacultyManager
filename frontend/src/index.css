@@ -1,18 +1,350 @@
+/* Global reset & typography */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.3)), url('./assets/PU1.png');
-  background-size: contain;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  color: #111827;
+  background: radial-gradient(
+    circle at top left,
+    #f9fafb 0,
+    #eef2f7 35%,
+    #e5e7eb 70%,
+    #d1d5db 100%
+  );
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* Layout utility classes */
+.app-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 40px;
+}
+
+.app-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.app-page-title {
+  font-size: 2rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111827;
+  margin: 0;
+}
+
+.app-page-subtitle {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.app-status-pill {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.app-status-pill--ok {
+  background: rgba(16, 185, 129, 0.08);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.app-status-pill--error {
+  background: rgba(239, 68, 68, 0.08);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.app-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+/* Card & panel styles */
+.app-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px 24px 20px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.app-card--soft {
+  border-radius: 14px;
+  padding: 20px 20px 16px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.app-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.app-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.app-card-description {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Form controls */
+.app-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.app-input {
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  outline: none;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.app-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.25);
+}
+
+.app-input::placeholder {
+  color: #9ca3af;
+}
+
+.app-field-help {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Buttons */
+.app-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    box-shadow 0.15s ease, transform 0.05s ease;
+}
+
+.app-btn-primary {
+  background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+}
+
+.app-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 12px 34px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.app-btn-secondary {
+  background: #ffffff;
+  color: #111827;
+  border-color: #d1d5db;
+}
+
+.app-btn-secondary:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.app-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  box-shadow: none;
+}
+
+.app-btn-icon {
+  font-size: 1rem;
+}
+
+/* Profile header */
+.app-profile-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.2fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.app-profile-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.app-profile-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.app-profile-meta {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.app-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.app-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.app-chip-soft {
+  background: #eef2ff;
+  color: #4338ca;
+}
+
+.app-chip-muted {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.app-profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.app-stat {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.app-stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.app-stat-value {
+  margin-top: 2px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Generic table styling (optional to adopt gradually) */
+.app-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.app-table thead tr {
+  background: #f3f4f6;
+}
+
+.app-table th,
+.app-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.app-table tbody tr:nth-child(2n) {
+  background: #fafafa;
+}
+
+.app-table tbody tr:hover {
+  background: #eff6ff;
+}
+
+@media (max-width: 900px) {
+  .app-page {
+    padding: 24px 16px 32px;
+  }
+
+  .app-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-profile-header {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-profile-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

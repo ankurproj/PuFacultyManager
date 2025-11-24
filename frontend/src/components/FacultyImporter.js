@@ -265,150 +265,99 @@ const FacultyImporter = () => {
 
   return (
     <Layout>
-      <div
-        style={{
-          minHeight: "100vh",
-          padding: "40px 20px",
-        }}
-      >
-        <div
-          style={{
-            padding: "10px 30px 30px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: 800,
-              marginBottom: "10px",
-              marginTop: "0px",
-            }}
+      <div className="app-page">
+        <div className="app-page-header">
+          <div>
+            <h1 className="app-page-title">Faculty Data Importer</h1>
+            <p className="app-page-subtitle">
+              Seamlessly pull structured academic data from Pondicherry University profiles
+              and blend it into your dashboard.
+            </p>
+          </div>
+          <div
+            className={`app-status-pill ${
+              backendStatus === 'connected'
+                ? 'app-status-pill--ok'
+                : backendStatus === 'checking'
+                ? ''
+                : 'app-status-pill--error'
+            }`}
           >
-            Faculty Data Importer
-          </h1>
+            <span className="app-status-dot" />
+            {backendStatus === 'checking' && 'Checking backend...'}
+            {backendStatus === 'connected' && 'Backend online'}
+            {backendStatus === 'error' && 'Unexpected backend response'}
+            {backendStatus === 'disconnected' && 'Backend unreachable'}
+          </div>
+        </div>
 
-
-
-          <p style={{ margin: '0 0 30px 0', color: 'black', fontSize: '1.2rem', opacity: 0.8 }}>
-            Import faculty profile data from Pondicherry University
-          </p>
-
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: '20px',
-            padding: '40px',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)'
-          }}>
-          {/* Faculty Import */}
-          <div style={{
-            padding: '15px',
-            marginBottom: '20px',
-            paddingTop: '0px'
-          }}>
-            <h3 style={{
-              color: '#2c3e50',
-              marginBottom: '15px',
-              fontSize: '1.5rem',
-              fontWeight: '700'
-            }}>
-              Faculty Data Management
-            </h3>
-
-            <div style={{
-              backgroundColor: '#e8f4fd',
-              border: '1px solid #bee5eb',
-              borderRadius: '12px',
-              padding: '20px',
-              marginBottom: '25px',
-              textAlign: 'center'
-            }}>
-              <p style={{
-                margin: '0 0 10px 0',
-                fontSize: '16px',
-                color: '#0c5460',
-                fontWeight: '600'
-              }}>
-                📝 <strong>Update My Profile:</strong> Enter a faculty Node ID and click "Update My Profile"
-                to add their academic data to your current profile.
-              </p>
-              <p style={{
-                margin: 0,
-                fontSize: '14px',
-                color: '#0c5460',
-                opacity: 0.8
-              }}>
-                Your email and login credentials will remain unchanged. Only academic data (publications, experience, etc.) will be added.
+        <div className="app-card">
+          <div className="app-card-header">
+            <div>
+              <h2 className="app-card-title">Faculty Data Management</h2>
+              <p className="app-card-description">
+                Enter a Pondicherry University faculty Node ID, preview their profile,
+                then update your own academic record in one click.
               </p>
             </div>
+          </div>
 
-            <div style={{
+          <div
+            className="app-card app-card--soft"
+            style={{ marginBottom: 20, paddingTop: 16, paddingBottom: 16 }}
+          >
+            <p className="app-card-description" style={{ marginBottom: 8 }}>
+              📝 <strong>Update My Profile</strong> keeps your login and email intact while
+              importing publications, experience, projects, guidance and more from the
+              selected faculty profile.
+            </p>
+          </div>
+
+          <div
+            style={{
               display: 'flex',
-              gap: '20px',
-              alignItems: 'center',
               flexWrap: 'wrap',
-              justifyContent: 'center'
-            }}>
+              gap: 16,
+              alignItems: 'flex-end',
+              marginBottom: 12
+            }}
+          >
+            <div className="app-field-group" style={{ minWidth: 260 }}>
+              <label className="app-label" htmlFor="nodeId">
+                Faculty Node ID
+              </label>
               <input
+                id="nodeId"
                 type="text"
                 value={nodeId}
                 onChange={(e) => setNodeId(e.target.value)}
-                placeholder="Enter Faculty Node ID (e.g., 941)"
-                style={{
-                  padding: '18px 24px',
-                  border: '2px solid #e9ecef',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  width: '320px',
-                  outline: 'none',
-                  transition: 'all 0.3s ease',
-                  backgroundColor: 'white',
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
-                }}
+                placeholder="e.g. 941"
+                className="app-input"
               />
+              <div className="app-field-help">
+                Find this ID from the Pondicherry University staff profile URL.
+              </div>
+            </div>
+
+            <div className="app-btn-row">
               <button
+                type="button"
                 onClick={handleSingleImport}
                 disabled={loading || !nodeId}
-                style={{
-                  padding: '18px 36px',
-                  backgroundColor: loading || !nodeId ? '#95a5a6' : '#27ae60',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  cursor: loading || !nodeId ? 'not-allowed' : 'pointer',
-                  fontWeight: '700',
-                  fontSize: '16px',
-                  transition: 'all 0.3s ease'
-                }}
+                className="app-btn app-btn-secondary"
               >
-                {loading ? 'Importing...' : 'Import Faculty'}
+                <span className="app-btn-icon">🔍</span>
+                {loading ? 'Importing…' : 'Preview Faculty Data'}
               </button>
 
               <button
+                type="button"
                 onClick={handleUpdateDatabase}
                 disabled={loading || !nodeId}
-                style={{
-                  padding: '18px 36px',
-                  backgroundColor: loading || !nodeId ? '#95a5a6' : '#3498db',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  cursor: loading || !nodeId ? 'not-allowed' : 'pointer',
-                  fontWeight: '700',
-                  fontSize: '16px',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseOver={(e) => {
-                  if (!loading && nodeId) {
-                    e.target.style.backgroundColor = '#2980b9';
-                  }
-                }}
-                onMouseOut={(e) => {
-                  if (!loading && nodeId) {
-                    e.target.style.backgroundColor = '#3498db';
-                  }
-                }}
+                className="app-btn app-btn-primary"
               >
-                {loading ? 'Updating My Profile...' : 'Update My Profile'}
+                <span className="app-btn-icon">⚡</span>
+                {loading ? 'Updating Profile…' : 'Update My Profile'}
               </button>
             </div>
           </div>
@@ -498,67 +447,64 @@ const FacultyImporter = () => {
                       <div style={{ marginTop: '20px' }}>
                         {/* Faculty Name, Designation, Department, and Email */}
                         {(result.data.name || result.data.designation || result.data.department || result.data.email) && (
-                          <div style={{ marginBottom: '25px', padding: '20px', backgroundColor: '#e8f4f8', borderRadius: '12px', borderLeft: '4px solid #007bff' }}>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#2c3e50' }}>
-                              {result.data.name}
+                          <div className="app-profile-header app-card app-card--soft" style={{ marginBottom: 24 }}>
+                            <div className="app-profile-main">
+                              <div className="app-profile-name">{result.data.name}</div>
+                              {result.data.designation && (
+                                <div className="app-profile-meta">{result.data.designation}</div>
+                              )}
+                              {result.data.department && (
+                                <div className="app-profile-meta">
+                                  <span style={{ marginRight: 6 }}>🏢</span>
+                                  {result.data.department}
+                                </div>
+                              )}
+                              {result.data.email && (
+                                <div className="app-profile-meta">
+                                  <span style={{ marginRight: 6 }}>📧</span>
+                                  <a href={`mailto:${result.data.email}`} style={{ color: '#2563eb', textDecoration: 'none' }}>
+                                    {result.data.email}
+                                  </a>
+                                </div>
+                              )}
+                              {result.data.home?.specialization &&
+                                result.data.home.specialization.length > 0 && (
+                                  <div className="app-chip-row">
+                                    {result.data.home.specialization.map((area, index) => (
+                                      <span
+                                        key={index}
+                                        className="app-chip"
+                                      >
+                                        {area}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
                             </div>
-                            {result.data.designation && (
-                              <div style={{ fontSize: '1.2rem', color: '#555', marginTop: '8px', fontStyle: 'italic' }}>
-                                {result.data.designation}
-                              </div>
-                            )}
-                            {result.data.department && (
-                              <div style={{ fontSize: '1.1rem', color: '#6c757d', marginTop: '10px', display: 'flex', alignItems: 'center' }}>
-                                <span style={{ marginRight: '8px' }}>🏢</span>
-                                <span>{result.data.department}</span>
-                              </div>
-                            )}
-                            {result.data.email && (
-                              <div style={{ fontSize: '1.1rem', color: '#007bff', marginTop: '10px', display: 'flex', alignItems: 'center' }}>
-                                <span style={{ marginRight: '8px' }}>📧</span>
-                                <a
-                                  href={`mailto:${result.data.email}`}
-                                  style={{
-                                    color: '#007bff',
-                                    textDecoration: 'none',
-                                    borderBottom: '1px solid transparent',
-                                    transition: 'border-bottom 0.2s ease'
-                                  }}
-                                  onMouseOver={(e) => e.target.style.borderBottom = '1px solid #007bff'}
-                                  onMouseOut={(e) => e.target.style.borderBottom = '1px solid transparent'}
-                                >
-                                  {result.data.email}
-                                </a>
-                              </div>
-                            )}
-                            {result.data.home?.specialization && result.data.home.specialization.length > 0 && (
-                              <div style={{ fontSize: '1.1rem', color: '#28a745', marginTop: '15px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                                  <span style={{ marginRight: '8px' }}>🎯</span>
-                                  <span style={{ fontWeight: 'bold' }}>Areas of Specialization:</span>
-                                </div>
-                                <div style={{ marginLeft: '24px' }}>
-                                  {result.data.home.specialization.map((area, index) => (
-                                    <span
-                                      key={index}
-                                      style={{
-                                        display: 'inline-block',
-                                        backgroundColor: '#d4edda',
-                                        color: '#155724',
-                                        padding: '6px 12px',
-                                        margin: '4px 8px 4px 0',
-                                        borderRadius: '20px',
-                                        fontSize: '0.95rem',
-                                        fontWeight: '500',
-                                        border: '1px solid #c3e6cb'
-                                      }}
-                                    >
-                                      {area}
-                                    </span>
-                                  ))}
+                            <div className="app-profile-stats">
+                              <div className="app-stat">
+                                <div className="app-stat-label">UGC / Peer-reviewed Papers</div>
+                                <div className="app-stat-value">
+                                  {(result.data.innovation?.ugc_papers?.length || 0) +
+                                    (result.data.innovation?.non_ugc_papers?.length || 0)}
                                 </div>
                               </div>
-                            )}
+                              <div className="app-stat">
+                                <div className="app-stat-label">Books & Chapters</div>
+                                <div className="app-stat-value">
+                                  {(result.data.books?.authored_books?.length || 0) +
+                                    (result.data.books?.edited_books?.length || 0) +
+                                    (result.data.books?.book_chapters?.length || 0)}
+                                </div>
+                              </div>
+                              <div className="app-stat">
+                                <div className="app-stat-label">Projects</div>
+                                <div className="app-stat-value">
+                                  {(result.data.projects?.ongoing_projects?.length || 0) +
+                                    (result.data.projects?.completed_projects?.length || 0)}
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         )}
 
@@ -1820,16 +1766,6 @@ const FacultyImporter = () => {
               </div>
             </div>
           )}
-          </div>
-
-          <style>
-            {`
-              @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-              }
-            `}
-          </style>
         </div>
       </div>
     </Layout>

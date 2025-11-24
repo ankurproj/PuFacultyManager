@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import LoadingSpinner from './LoadingSpinner';
+import Layout from './Layout';
 
 import { getApiUrl } from '../config/api';
 function Dashboard() {
@@ -217,285 +218,24 @@ function Dashboard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
-
-  // Role-based menu items
-  const baseMenuItems = [
-    { label: 'Profile', path: '/profile', icon: '👤' },
-    { label: 'Experience', path: '/experience', icon: '💼' },
-    { label: 'Faculty', path: '/faculty', icon: '👥' },
-    { label: 'Faculty Importer', path: '/faculty-importer', icon: '📥' },
-    { label: 'Publications', path: '/publications', icon: '📄' },
-    { label: 'Access Requests', path: '/access-requests', icon: '🔐' },
-    { label: 'Patents', path: '/patents', icon: '💡' },
-    { label: 'Fellowship', path: '/fellowship', icon: '🏆' },
-    { label: 'Training & Consultancy', path: '/training', icon: '💰' },
-    { label: 'MOU & Collaborations', path: '/mou', icon: '🤝' },
-    { label: 'Books', path: '/books', icon: '📚' },
-    { label: 'Research Guidance', path: '/research-guidance', icon: '👨‍🎓' },
-    { label: 'Project & Consultancy', path: '/project-consultancy', icon: '🚀' },
-    { label: 'E-Education', path: '/e-education', icon: '💻' },
-    { label: 'Conference/ Seminar/ Workshop', path: '/conference-seminar-workshop', icon: '🎤' },
-    { label: 'Participation & Collaboration', path: '/participation-collaboration', icon: '🤝' },
-    { label: 'Programme Details', path: '/programme', icon: '📋' }
-  ];
-
-  const hodMenuItems = [
-    ...baseMenuItems
-    // Faculty directory is available in the base menu for all users
-  ];
-
-  const menuItems = userRole === 'hod' ? hodMenuItems : baseMenuItems;
-
   if (loading) {
-    return <LoadingSpinner message="Loading dashboard..." />;
+    return (
+      <Layout>
+        <div className="app-page">
+          <LoadingSpinner message="Loading dashboard..." />
+        </div>
+      </Layout>
+    );
   }
 
   return (
-    <div style={{
-      minHeight: '100vh', backgroundSize: 'cover',
-      display: 'flex', position: 'relative'
-    }}>
-      {/* Overlay when sidebar is open */}
-      {sidebarOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(134, 133, 133, 0.3)',
-            zIndex: 998
-          }}
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <div style={{
-        width: sidebarOpen ? '280px' : '90px',
-        background: 'linear-gradient(180deg, #6093ecff 0%, #1a202c 100%)',
-        color: '#fff',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'fixed',
-        height: '100vh',
-        zIndex: 999,
-        boxShadow: sidebarOpen ? '4px 0 20px rgba(0,0,0,0.15)' : '2px 0 10px rgba(0,0,0,0.1)'
-      }}>
-        {/* Header */}
-        <div style={{
-          padding: '20px',
-          borderBottom: '1px solid rgba(255,255,255,0.1)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: sidebarOpen ? 'space-between' : 'center'
-        }}>
-          {sidebarOpen && (
-            <h3 style={{
-              margin: 0,
-              fontSize: '1.2rem',
-              fontWeight: 700,
-              background: 'white',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              Dashboard
-            </h3>
-          )}
-
-          {/* Enhanced Burger Menu */}
-          <div
-            style={{
-              cursor: 'pointer',
-              padding: '8px',
-              borderRadius: '8px',
-              transition: 'all 0.2s ease',
-              background: sidebarOpen ? 'rgba(255,255,255,0.1)' : 'transparent'
-            }}
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            <div style={{
-              width: '24px',
-              height: '4px',
-              background: '#fff',
-              margin: '4px 0',
-              borderRadius: '2px',
-            }} />
-            <div style={{
-              width: '24px',
-              height: '4px',
-              background: '#fff',
-              margin: '4px 0',
-              borderRadius: '2px',
-            }} />
-            <div style={{
-              width: '24px',
-              height: '4px',
-              background: '#fff',
-              margin: '4px 0',
-              borderRadius: '2px',
-            }} />
-          </div>
-        </div>
-
-        {/* Navigation Menu */}
-        <div
-          className="dashboard-menu-scroll"
-          style={{
-            flex: 1,
-            padding: '5px 0',
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            maxHeight: 'calc(100vh - 160px)', // Account for header and logout button
-          }}
-        >
-          <style dangerouslySetInnerHTML={{
-            __html: `
-              .dashboard-menu-scroll::-webkit-scrollbar {
-                width: 6px;
-              }
-              .dashboard-menu-scroll::-webkit-scrollbar-track {
-                background: rgba(255,255,255,0.1);
-                border-radius: 3px;
-              }
-              .dashboard-menu-scroll::-webkit-scrollbar-thumb {
-                background: rgba(255,255,255,0.3);
-                border-radius: 3px;
-              }
-              .dashboard-menu-scroll::-webkit-scrollbar-thumb:hover {
-                background: rgba(255,255,255,0.5);
-              }
-              .dashboard-menu-scroll {
-                scrollbar-width: thin;
-                scrollbar-color: rgba(255,255,255,0.3) transparent;
-              }
-            `
-          }} />
-          {menuItems.map((item, index) => (
-            <div
-              key={item.label}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: sidebarOpen ? '5px 24px' : '5px 15px',
-                margin: '8px 16px',
-                cursor: 'pointer',
-                borderRadius: '12px',
-                transition: 'all 0.2s ease',
-                background: 'transparent',
-                position: 'relative',
-                overflow: 'hidden'
-              }}
-              onClick={() => navigate(item.path)}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(255,255,255,0.1)';
-                e.target.style.transform = 'translateX(4px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = 'transparent';
-                e.target.style.transform = 'translateX(0)';
-              }}
-            >
-              <span style={{
-                fontSize: '1.5rem',
-                marginRight: sidebarOpen ? '16px' : '0',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '24px'
-              }}>
-                {item.icon}
-              </span>
-              {sidebarOpen && (
-                <span style={{
-                  fontSize: '1rem',
-                  fontWeight: 500,
-                  opacity: 0.9
-                }}>
-                  {item.label}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Logout Button */}
-        <div style={{ padding: '20px' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: sidebarOpen ? '12px 20px' : '12px',
-              cursor: 'pointer',
-              borderRadius: '12px',
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              transition: 'all 0.2s ease',
-              justifyContent: sidebarOpen ? 'flex-start' : 'center'
-            }}
-            onClick={handleLogout}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(239, 68, 68, 0.2)';
-              e.target.style.borderColor = 'rgba(239, 68, 68, 0.5)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'rgba(239, 68, 68, 0.1)';
-              e.target.style.borderColor = 'rgba(239, 68, 68, 0.3)';
-            }}
-          >
-            <span style={{ fontSize: '1.2rem', marginRight: sidebarOpen ? '12px' : '0' }}>➜]</span>
-            {sidebarOpen && (
-              <span style={{ fontSize: '0.9rem', fontWeight: 500, color: '#ef4444' }}>
-                Logout
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div style={{
-        flex: 1,
-        marginLeft: sidebarOpen ? '280px' : '70px',
-        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        padding: '40px',
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh'
-      }}>
+    <Layout>
+      <div className="app-page" style={{ padding: '32px 40px', minHeight: '100vh' }}>
         {/* Header with Profile Picture */}
-        <div style={{
-          marginBottom: '40px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start'
-        }}>
+        <div className="app-page-header" style={{ marginBottom: '28px', alignItems: 'center' }}>
           <div>
-            <h1 style={{
-              fontSize: '2.2rem',
-              fontWeight: 800,
-              color: '#2d3748',
-              marginBottom: '8px',
-              marginTop: 0,
-              marginLeft: 20,
-              fontFamily: 'Segoe UI, Arial, sans-serif',
-              textShadow: '0 4px 16px rgba(0,0,0,0.2)'
-            }}>
-              Welcome back, {userName}!
-            </h1>
-            <p style={{
-              fontSize: '1.1rem',
-              color: '#718096',
-              marginLeft: 20,
-              margin: '0 0 0 20px'
-            }}>
+            <h1 className="app-page-title">Welcome back, {userName}!</h1>
+            <p className="app-page-subtitle">
               {userRole === 'hod' ? 'Head of Department Dashboard' :
                 userRole === 'dean' ? 'Dean Dashboard' :
                   userRole === 'guest_faculty' ? 'Guest Faculty Dashboard' :
@@ -504,8 +244,7 @@ function Dashboard() {
             <p style={{
               fontSize: '0.9rem',
               color: '#a0aec0',
-              marginLeft: 20,
-              margin: '5px 0 0 20px',
+              marginTop: '6px',
               fontStyle: 'italic'
             }}>
               Last updated: {lastUpdated.toLocaleString()}
@@ -530,7 +269,7 @@ function Dashboard() {
               color: '#fff',
               fontSize: '2rem',
               fontWeight: 700,
-              boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+              boxShadow: '0 18px 45px rgba(15, 23, 42, 0.35)',
               border: '3px solid #fff',
               overflow: 'hidden',
               position: 'relative'
@@ -551,9 +290,7 @@ function Dashboard() {
               )}
             </div>
             <p style={{
-              fontSize: '1.1rem',
-              marginLeft: 20,
-              margin: '0px 0 0 20px',
+              margin: 0,
               fontWeight: 600,
               fontSize: '1.2rem'
             }}>{userDesignation}</p>
@@ -562,23 +299,15 @@ function Dashboard() {
 
         {/* Statistics Cards for HOD */}
         {userRole === 'hod' && (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '25px',
-            marginBottom: '40px'
-          }}>
+          <div className="app-profile-stats" style={{ marginBottom: '32px' }}>
             {/* Faculty Statistics Card */}
-            <div style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: '20px',
-              padding: '25px',
-              color: '#fff',
-              boxShadow: '0 10px 40px rgba(102, 126, 234, 0.3)',
-              transform: 'translateY(0)',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
+            <div
+              className="app-card"
+              style={{
+                background: 'linear-gradient(145deg, #6366f1 0%, #8b5cf6 40%, #ec4899 100%)',
+                color: '#fff',
+                cursor: 'pointer'
+              }}
               onClick={() => navigate('/faculty')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-5px)';
@@ -591,33 +320,39 @@ function Dashboard() {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: '20px'
+                justifyContent: 'space-between',
+                marginBottom: '16px'
               }}>
-
                 <div>
                   <h3 style={{
                     margin: 0,
-                    fontSize: '1.8rem',
+                    fontSize: '1.5rem',
                     fontWeight: 700
                   }}>Faculty Overview</h3>
-
+                  <p style={{
+                    margin: '4px 0 0',
+                    fontSize: '0.9rem',
+                    opacity: 0.9
+                  }}>Distribution by designation in your department</p>
                 </div>
+                <span style={{ fontSize: '1.8rem' }}>👥</span>
               </div>
 
               <div style={{
                 fontSize: '3rem',
                 fontWeight: 800,
-                marginBottom: '15px',
+                marginBottom: '12px',
                 textAlign: 'center'
               }}>
                 {facultyStats.totalProfessors}
               </div>
 
               <div style={{
-                background: 'rgba(255, 255, 255, 0.2)',
-                borderRadius: '12px',
-                padding: '15px',
-                marginTop: '20px'
+                background: 'rgba(15, 23, 42, 0.22)',
+                borderRadius: '16px',
+                padding: '14px 16px',
+                marginTop: '16px',
+                backdropFilter: 'blur(14px)'
               }}>
 
                 {Object.entries(facultyStats.designationCounts).map(([designation, count]) => (
@@ -625,14 +360,14 @@ function Dashboard() {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: '5px',
-                    fontSize: '0.95rem'
+                      marginBottom: '6px',
+                      fontSize: '0.9rem'
                   }}>
                     <span>{designation}</span>
                     <span style={{
-                      background: 'rgba(255, 255, 255, 0.3)',
-                      padding: '2px 8px',
-                      borderRadius: '10px',
+                      background: 'rgba(248, 250, 252, 0.24)',
+                      padding: '4px 10px',
+                      borderRadius: '999px',
                       fontWeight: 600
                     }}>{count}</span>
                   </div>
@@ -641,16 +376,13 @@ function Dashboard() {
             </div>
 
             {/* Publications Statistics Card */}
-            <div style={{
-              background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-              borderRadius: '20px',
-              padding: '25px',
-              color: '#fff',
-              boxShadow: '0 10px 40px rgba(79, 172, 254, 0.3)',
-              transform: 'translateY(0)',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
+            <div
+              className="app-card"
+              style={{
+                background: 'linear-gradient(145deg, #0ea5e9 0%, #38bdf8 40%, #22c55e 100%)',
+                color: '#fff',
+                cursor: 'pointer'
+              }}
               onClick={() => navigate('/publications')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-5px)';
@@ -663,35 +395,43 @@ function Dashboard() {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: '20px'
+                justifyContent: 'space-between',
+                marginBottom: '16px'
               }}>
                 <div>
                   <h3 style={{
                     margin: 0,
-                    fontSize: '1.8rem',
+                    fontSize: '1.5rem',
                     fontWeight: 700
                   }}>Department Publications</h3>
+                  <p style={{
+                    margin: '4px 0 0',
+                    fontSize: '0.9rem',
+                    opacity: 0.9
+                  }}>Consolidated publications across all faculty</p>
                 </div>
+                <span style={{ fontSize: '1.8rem' }}>📚</span>
               </div>
 
               <div style={{
                 fontSize: '3rem',
                 fontWeight: 800,
-                marginBottom: '15px',
+                marginBottom: '12px',
                 textAlign: 'center'
               }}>
                 {publicationsStats.totalPublications}
               </div>
 
               <div style={{
-                background: 'rgba(255, 255, 255, 0.2)',
-                borderRadius: '12px',
-                padding: '15px',
-                marginTop: '20px'
+                background: 'rgba(15, 23, 42, 0.22)',
+                borderRadius: '16px',
+                padding: '14px 16px',
+                marginTop: '16px',
+                backdropFilter: 'blur(14px)'
               }}>
                 <div style={{
                   fontSize: '0.9rem',
-                  marginBottom: '10px',
+                  marginBottom: '8px',
                   fontWeight: 600,
                   textAlign: 'center'
                 }}>Last 3 Years</div>
@@ -702,14 +442,14 @@ function Dashboard() {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      marginBottom: '5px',
+                      marginBottom: '6px',
                       fontSize: '0.85rem'
                     }}>
                       <span>{year}</span>
                       <span style={{
-                        background: 'rgba(255, 255, 255, 0.3)',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
+                        background: 'rgba(248, 250, 252, 0.24)',
+                        padding: '4px 10px',
+                        borderRadius: '999px',
                         fontWeight: 600
                       }}>{count}</span>
                     </div>
@@ -727,16 +467,13 @@ function Dashboard() {
             </div>
 
             {/* Awards Statistics Card */}
-            <div style={{
-              background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-              borderRadius: '20px',
-              padding: '25px',
-              color: '#fff',
-              boxShadow: '0 10px 40px rgba(250, 112, 154, 0.3)',
-              transform: 'translateY(0)',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
+            <div
+              className="app-card"
+              style={{
+                background: 'linear-gradient(145deg, #f97316 0%, #facc15 45%, #22c55e 100%)',
+                color: '#fff',
+                cursor: 'pointer'
+              }}
               onClick={() => navigate('/fellowship')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-5px)';
@@ -749,35 +486,38 @@ function Dashboard() {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: '20px'
+                justifyContent: 'space-between',
+                marginBottom: '16px'
               }}>
                 <div>
                   <h3 style={{
                     margin: 0,
-                    fontSize: '1.8rem',
+                    fontSize: '1.5rem',
                     fontWeight: 700
                   }}>Department Awards</h3>
                 </div>
+                <span style={{ fontSize: '1.8rem' }}>🏆</span>
               </div>
 
               <div style={{
                 fontSize: '3rem',
                 fontWeight: 800,
-                marginBottom: '15px',
+                marginBottom: '12px',
                 textAlign: 'center'
               }}>
                 {awardsStats.totalAwards}
               </div>
 
               <div style={{
-                background: 'rgba(255, 255, 255, 0.2)',
-                borderRadius: '12px',
-                padding: '15px',
-                marginTop: '20px'
+                background: 'rgba(15, 23, 42, 0.22)',
+                borderRadius: '16px',
+                padding: '14px 16px',
+                marginTop: '16px',
+                backdropFilter: 'blur(14px)'
               }}>
                 <div style={{
                   fontSize: '0.9rem',
-                  marginBottom: '10px',
+                  marginBottom: '8px',
                   fontWeight: 600,
                   textAlign: 'center'
                 }}>Top Faculty by Awards</div>
@@ -788,12 +528,12 @@ function Dashboard() {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      marginBottom: '8px',
+                      marginBottom: '6px',
                       fontSize: '0.85rem'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center' }}>
                         <span style={{
-                          background: 'rgba(255, 255, 255, 0.3)',
+                          background: 'rgba(248, 250, 252, 0.24)',
                           borderRadius: '50%',
                           width: '20px',
                           height: '20px',
@@ -817,9 +557,9 @@ function Dashboard() {
                         </span>
                       </div>
                       <span style={{
-                        background: 'rgba(255, 255, 255, 0.3)',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
+                        background: 'rgba(248, 250, 252, 0.24)',
+                        padding: '4px 10px',
+                        borderRadius: '999px',
                         fontWeight: 600,
                         fontSize: '0.8rem'
                       }}>{faculty.awardCount}</span>
@@ -840,26 +580,14 @@ function Dashboard() {
         )}
 
         {/* Access Request Notifications */}
-        {(accessRequestsCount.incoming > 0) && (
-          <div style={{
-            background: '#fff',
-            borderRadius: '20px',
-            padding: '30px',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-            marginBottom: '30px'
-          }}>
-            <h2 style={{
-              fontSize: '1.5rem',
-              fontWeight: 700,
-              color: '#2d3748',
-              marginBottom: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              marginTop: '0px',
-            }}>
-              Access Request Notifications
-            </h2>
+        {(accessRequestsCount.incoming > 0 || accessRequestsCount.outgoing > 0) && (
+          <div className="app-card" style={{ marginBottom: '24px' }}>
+            <div className="app-card-header">
+              <div>
+                <h2 className="app-card-title">Access Request Notifications</h2>
+                <p className="app-card-description">Quickly jump into requests that need your attention.</p>
+              </div>
+            </div>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
@@ -936,22 +664,26 @@ function Dashboard() {
           </div>
         )}
 
+        {/* Empty state when no notifications */}
+        {(accessRequestsCount.incoming === 0 && accessRequestsCount.outgoing === 0) && (
+          <div className="app-card" style={{ marginBottom: '24px' }}>
+            <div className="app-card-header">
+              <div>
+                <h2 className="app-card-title">No Pending Requests</h2>
+                <p className="app-card-description">You’re all caught up. New access requests will appear here.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Quick Actions */}
-        <div style={{
-          background: '#fff',
-          borderRadius: '20px',
-          padding: '30px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-        }}>
-          <h2 style={{
-            fontSize: '1.5rem',
-            fontWeight: 700,
-            color: '#2d3748',
-            marginBottom: '20px',
-            marginTop: '0px',
-          }}>
-            Quick Actions
-          </h2>
+        <div className="app-card">
+          <div className="app-card-header">
+            <div>
+              <h2 className="app-card-title">Quick Actions</h2>
+              <p className="app-card-description">Jump straight to the most common workflows.</p>
+            </div>
+          </div>
 
           <div style={{
             display: 'grid',
@@ -960,119 +692,35 @@ function Dashboard() {
           }}>
             <button
               onClick={() => navigate('/faculty')}
-              style={{
-                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                color: '#fff',
-                border: 'none',
-                padding: '15px 20px',
-                borderRadius: '12px',
-                fontSize: '1rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-              }}
+              className="app-btn app-btn-primary"
             >
               👥 Faculty Directory
             </button>
 
             <button
               onClick={() => navigate('/access-requests')}
-              style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                color: '#fff',
-                border: 'none',
-                padding: '15px 20px',
-                borderRadius: '12px',
-                fontSize: '1rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-              }}
+              className="app-btn app-btn-secondary"
             >
               🔐 Access Requests
             </button>
 
             <button
               onClick={() => navigate('/report')}
-              style={{
-                background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-                color: '#fff',
-                border: 'none',
-                padding: '15px 20px',
-                borderRadius: '12px',
-                fontSize: '1rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 6px 20px rgba(139, 92, 246, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 15px rgba(139, 92, 246, 0.3)';
-              }}
+              className="app-btn app-btn-secondary"
             >
               📊 Generate Report
             </button>
 
             <button
               onClick={() => navigate('/faculty-importer')}
-              style={{
-                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                color: '#fff',
-                border: 'none',
-                padding: '15px 20px',
-                borderRadius: '12px',
-                fontSize: '1rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 15px rgba(16, 185, 129, 0.3)';
-              }}
+              className="app-btn app-btn-primary"
             >
               📥 Import Faculty Data
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

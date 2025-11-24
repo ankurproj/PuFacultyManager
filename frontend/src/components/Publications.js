@@ -457,53 +457,30 @@ function Publications() {
   };
 
   if (loading) {
-    return <LoadingSpinner message="Loading publications..." />;
+    return (
+      <Layout>
+        <div className="app-page">
+          <LoadingSpinner message="Loading publications..." />
+        </div>
+      </Layout>
+    );
   }
 
   return (
     <Layout>
-      <div
-        style={{
-          minHeight: "100vh",
-          padding: "40px 20px",
-        }}
-      >
-        <div
-          style={{
-            padding: "10px 30px 30px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: 800,
-              marginBottom: "10px",
-              marginTop: "0px",
-            }}
-          >
-            Publications
-          </h1>
-          <p
-            style={{
-              fontSize: "1.1rem",
-              marginBottom: "40px",
-              opacity: 0.8,
-              marginTop: "0px",
-            }}
-          >
-            Update your academic publications and research papers
-          </p>
+      <div className="app-page">
+        <div className="app-card">
+          <div className="app-card-header">
+            <div>
+              <h1 className="app-page-title">Publications</h1>
+              <p className="app-page-subtitle">
+                Update your academic publications and research papers.
+              </p>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit}>
-            <div
-              style={{
-                background: "#fff",
-                padding: "40px",
-                borderRadius: "20px",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.08)",
-                marginBottom: "30px",
-              }}
-            >
+            <div>
               <div style={{ marginTop: "0px" }}>
                 <h2
                   style={{
@@ -521,13 +498,8 @@ function Publications() {
                 >
                   Papers Published
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th style={{ width: "40px", padding: "10px", border: "1px solid #e2e8f0", fontWeight: 600 }}>S.No</th>
@@ -717,7 +689,8 @@ function Publications() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 {isOwnProfile && (
                   <button
                     type="button"
@@ -751,13 +724,8 @@ function Publications() {
                 >
                   Conference Proceedings
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th style={{ width: "40px", padding: "10px", border: "1px solid #e2e8f0", fontWeight: 600 }}>S.No</th>
@@ -924,7 +892,8 @@ function Publications() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 {isOwnProfile && (
                   <button
                     type="button"

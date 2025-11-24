@@ -180,49 +180,19 @@ function Experience() {
 
   return (
     <Layout>
-      <div
-        style={{
-          minHeight: "100vh",
-          padding: "40px 20px",
-        }}
-      >
-        <div
-          style={{
-            padding: "10px 30px 30px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: 800,
-              color: "#1a202c",
-              marginTop: "0px",
-              marginBottom: "0px",
-            }}
-          >
-            Experience Details
-          </h1>
-          <p
-            style={{
-              fontSize: "1.1rem",
-              marginBottom: "30px",
-              opacity: 0.8,
-              marginTop: "10px",
-            }}
-          >
-            Update your teaching, research, and industry experience information
-          </p>
+      <div className="app-page">
+        <div className="app-card">
+          <div className="app-card-header">
+            <div>
+              <h1 className="app-page-title">Experience Details</h1>
+              <p className="app-page-subtitle">
+                Update your teaching, research, and industry experience information.
+              </p>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit}>
-            <div
-              style={{
-                background: "#fff",
-                padding: "40px",
-                borderRadius: "20px",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.08)",
-                marginBottom: "30px",
-              }}
-            >
+            <div>
               {/* Teaching Experience Section */}
               <div style={{ marginTop: "5px" }}>
                 <h2
@@ -241,13 +211,8 @@ function Experience() {
                 >
                   Teaching Experience
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th
@@ -523,7 +488,8 @@ function Experience() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 <button
                   type="button"
                   onClick={() => addArrayItem("teaching_experience")}
@@ -559,13 +525,8 @@ function Experience() {
                 >
                   Research Experience
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th
@@ -841,7 +802,8 @@ function Experience() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 <button
                   type="button"
                   onClick={() => addArrayItem("research_experience")}
@@ -877,13 +839,8 @@ function Experience() {
                 >
                   Industry Experience
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th
@@ -1159,7 +1116,8 @@ function Experience() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 <button
                   type="button"
                   onClick={() => addArrayItem("industry_experience")}
@@ -1188,29 +1146,7 @@ function Experience() {
               >
                 <button
                   type="submit"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "12px",
-                    padding: "16px 40px",
-                    fontSize: "1.1rem",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    boxShadow: "0 8px 25px rgba(102, 126, 234, 0.3)",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow =
-                      "0 12px 35px rgba(102, 126, 234, 0.4)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow =
-                      "0 8px 25px rgba(102, 126, 234, 0.3)";
-                  }}
+                  className="app-btn app-btn-primary"
                 >
                   Update
                 </button>

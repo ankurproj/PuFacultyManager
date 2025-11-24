@@ -179,48 +179,19 @@ function Books() {
 
   return (
     <Layout>
-      <div
-        style={{
-          minHeight: "100vh",
-          padding: "40px 20px",
-        }}
-      >
-        <div
-          style={{
-            padding: "10px 30px 30px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: 800,
-              marginBottom: "10px",
-              marginTop: "0px",
-            }}
-          >
-            Books & Publications
-          </h1>
-          <p
-            style={{
-              fontSize: "1.1rem",
-              marginBottom: "30px",
-              marginTop: "0px",
-              opacity: 0.8
-            }}
-          >
-            Update your book publications, chapters, and edited books
-          </p>
+      <div className="app-page">
+        <div className="app-card">
+          <div className="app-card-header">
+            <div>
+              <h1 className="app-page-title">Books & Publications</h1>
+              <p className="app-page-subtitle">
+                Update your book publications, chapters, and edited books.
+              </p>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit}>
-            <div
-              style={{
-                background: "#fff",
-                padding: "40px",
-                borderRadius: "20px",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.08)",
-                marginBottom: "30px",
-              }}
-            >
+            <div>
               {/* Books Section */}
               <div style={{ marginTop: "0px" }}>
                 <h2
@@ -239,13 +210,8 @@ function Books() {
                 >
                   Books
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th style={{ width: "40px", padding: "10px", border: "1px solid #e2e8f0", fontWeight: 600 }}>S.No</th>
@@ -364,7 +330,8 @@ function Books() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 <button
                   type="button"
                   onClick={() => addArrayItem("books")}
@@ -400,13 +367,8 @@ function Books() {
                 >
                   Chapters in Books
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th style={{ width: "40px", padding: "10px", border: "1px solid #e2e8f0", fontWeight: 600 }}>S.No</th>
@@ -535,7 +497,8 @@ function Books() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 <button
                   type="button"
                   onClick={() => addArrayItem("chapters_in_books")}
@@ -571,13 +534,8 @@ function Books() {
                 >
                   Edited Books
                 </h2>
-                <table
-                  style={{
-                    width: "100%",
-                    borderCollapse: "collapse",
-                    marginBottom: "10px",
-                  }}
-                >
+                <div className="app-table-wrapper">
+                  <table className="app-table">
                   <thead>
                     <tr style={{ background: "#f1f5f9" }}>
                       <th style={{ width: "40px", padding: "10px", border: "1px solid #e2e8f0", fontWeight: 600 }}>S.No</th>
@@ -715,7 +673,8 @@ function Books() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                  </table>
+                </div>
                 <button
                   type="button"
                   onClick={() => addArrayItem("edited_books")}
@@ -744,29 +703,7 @@ function Books() {
               >
                 <button
                   type="submit"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "12px",
-                    padding: "16px 40px",
-                    fontSize: "1.1rem",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    boxShadow: "0 8px 25px rgba(102, 126, 234, 0.3)",
-                    transition: "all 0.3s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.transform = "translateY(-2px)";
-                    e.target.style.boxShadow =
-                      "0 12px 35px rgba(102, 126, 234, 0.4)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.transform = "translateY(0)";
-                    e.target.style.boxShadow =
-                      "0 8px 25px rgba(102, 126, 234, 0.3)";
-                  }}
+                  className="app-btn app-btn-primary"
                 >
                   Update
                 </button>
