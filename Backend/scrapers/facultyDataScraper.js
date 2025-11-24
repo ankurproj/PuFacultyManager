@@ -240,7 +240,7 @@ class FacultyDataScraper {
 
         // Meta information
         scraped_date: new Date(),
-        source_url: url,
+        source_url: fetched && fetched.url,
         node_id: nodeId
       };
 

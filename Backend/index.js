@@ -14,30 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-// Dynamic CORS allowlist via env (comma-separated), plus common dev defaults
-const allowedOriginEnv = process.env.ALLOWED_ORIGINS || '';
-const allowedOrigins = [
-    'http://localhost:3000',
-    /\.netlify\.app$/,
-    /\.vercel\.app$/
-];
-
-allowedOriginEnv
-    .split(',')
-    .map(s => s.trim())
-    .filter(Boolean)
-    .forEach(origin => allowedOrigins.push(origin));
-
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true); // Allow same-origin/non-browser requests
-        const isAllowed = allowedOrigins.some(o => {
-            if (o instanceof RegExp) return o.test(origin);
-            return o === origin;
-        });
-        if (isAllowed) return callback(null, true);
-        return callback(new Error('Not allowed by CORS'));
-    },
+    origin: [
+        'http://localhost:3000',
+        'https://professorpublication-production.up.railway.app',
+        /\.netlify\.app$/,
+        /\.vercel\.app$/
+    ],
     credentials: true
 }));
 app.use(express.json());
@@ -52,8 +35,18 @@ app.use((req, res, next) => {
 });
 
 // MongoDB connection
-mongoose.connect(MONGO_URI).then(() => console.log('MongoDB connected'))
-.catch(err => console.log(err));
+// mongoose.connect(MONGO_URI).then(() => console.log('MongoDB connected'))
+// .catch(err => console.log(err));
+// in Backend/index.js, replace the direct connect with this:
+if (MONGO_URI) {
+  mongoose.connect(MONGO_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => {
+      console.error('MongoDB connection error (non-fatal for scraper):', err.message);
+    });
+} else {
+  console.warn('MONGO_URI not set; skipping MongoDB connection');
+}
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
