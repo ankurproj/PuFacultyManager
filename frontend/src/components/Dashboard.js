@@ -228,6 +228,47 @@ function Dashboard() {
     );
   }
 
+  // Shared styles for HOD statistic cards to keep them perfectly aligned
+  const statCardHeader = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '18px'
+  };
+
+  const statCardTitle = {
+    margin: 0,
+    fontSize: '1.5rem',
+    fontWeight: 700
+  };
+
+  const statCardSubtitle = {
+    margin: '6px 0 0',
+    fontSize: '0.9rem',
+    opacity: 0.9
+  };
+
+  const statCardIcon = {
+    fontSize: '1.9rem'
+  };
+
+  const statCardValue = {
+    fontSize: '3.2rem',
+    fontWeight: 800,
+    marginBottom: '16px',
+    textAlign: 'center',
+    width: '100%'
+  };
+
+  const statCardInner = {
+    background: 'rgba(15, 23, 42, 0.22)',
+    borderRadius: '18px',
+    padding: '14px 18px',
+    marginTop: '8px',
+    minHeight: '120px',
+    backdropFilter: 'blur(14px)'
+  };
+
   return (
     <Layout>
       <div className="app-page" style={{ padding: '32px 40px', minHeight: '100vh' }}>
@@ -317,43 +358,19 @@ function Dashboard() {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 10px 40px rgba(102, 126, 234, 0.3)';
               }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '16px'
-              }}>
+              <div style={statCardHeader}>
                 <div>
-                  <h3 style={{
-                    margin: 0,
-                    fontSize: '1.5rem',
-                    fontWeight: 700
-                  }}>Faculty Overview</h3>
-                  <p style={{
-                    margin: '4px 0 0',
-                    fontSize: '0.9rem',
-                    opacity: 0.9
-                  }}>Distribution by designation in your department</p>
+                  <h3 style={statCardTitle}>Faculty Overview</h3>
+                  <p style={statCardSubtitle}>Distribution by designation in your department</p>
                 </div>
-                <span style={{ fontSize: '1.8rem' }}>👥</span>
+                <span style={statCardIcon}>👥</span>
               </div>
 
-              <div style={{
-                fontSize: '3rem',
-                fontWeight: 800,
-                marginBottom: '12px',
-                textAlign: 'center'
-              }}>
+              <div style={statCardValue}>
                 {facultyStats.totalProfessors}
               </div>
 
-              <div style={{
-                background: 'rgba(15, 23, 42, 0.22)',
-                borderRadius: '16px',
-                padding: '14px 16px',
-                marginTop: '16px',
-                backdropFilter: 'blur(14px)'
-              }}>
+              <div style={statCardInner}>
 
                 {Object.entries(facultyStats.designationCounts).map(([designation, count]) => (
                   <div key={designation} style={{
@@ -392,43 +409,19 @@ function Dashboard() {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 10px 40px rgba(79, 172, 254, 0.3)';
               }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '16px'
-              }}>
+              <div style={statCardHeader}>
                 <div>
-                  <h3 style={{
-                    margin: 0,
-                    fontSize: '1.5rem',
-                    fontWeight: 700
-                  }}>Department Publications</h3>
-                  <p style={{
-                    margin: '4px 0 0',
-                    fontSize: '0.9rem',
-                    opacity: 0.9
-                  }}>Consolidated publications across all faculty</p>
+                  <h3 style={statCardTitle}>Faculty Publications</h3>
+                  <p style={statCardSubtitle}>Consolidated publications across all faculty</p>
                 </div>
-                <span style={{ fontSize: '1.8rem' }}>📚</span>
+                <span style={statCardIcon}>📚</span>
               </div>
 
-              <div style={{
-                fontSize: '3rem',
-                fontWeight: 800,
-                marginBottom: '12px',
-                textAlign: 'center'
-              }}>
+              <div style={statCardValue}>
                 {publicationsStats.totalPublications}
               </div>
 
-              <div style={{
-                background: 'rgba(15, 23, 42, 0.22)',
-                borderRadius: '16px',
-                padding: '14px 16px',
-                marginTop: '16px',
-                backdropFilter: 'blur(14px)'
-              }}>
+              <div style={statCardInner}>
                 <div style={{
                   fontSize: '0.9rem',
                   marginBottom: '8px',
@@ -483,38 +476,19 @@ function Dashboard() {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 10px 40px rgba(250, 112, 154, 0.3)';
               }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '16px'
-              }}>
+              <div style={statCardHeader}>
                 <div>
-                  <h3 style={{
-                    margin: 0,
-                    fontSize: '1.5rem',
-                    fontWeight: 700
-                  }}>Department Awards</h3>
+                  <h3 style={statCardTitle}>Department Awards</h3>
+                  <p style={statCardSubtitle}>Recognition and achievements across the department</p>
                 </div>
-                <span style={{ fontSize: '1.8rem' }}>🏆</span>
+                <span style={statCardIcon}>🏆</span>
               </div>
 
-              <div style={{
-                fontSize: '3rem',
-                fontWeight: 800,
-                marginBottom: '12px',
-                textAlign: 'center'
-              }}>
+              <div style={statCardValue}>
                 {awardsStats.totalAwards}
               </div>
 
-              <div style={{
-                background: 'rgba(15, 23, 42, 0.22)',
-                borderRadius: '16px',
-                padding: '14px 16px',
-                marginTop: '16px',
-                backdropFilter: 'blur(14px)'
-              }}>
+              <div style={statCardInner}>
                 <div style={{
                   fontSize: '0.9rem',
                   marginBottom: '8px',
