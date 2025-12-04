@@ -65,68 +65,304 @@ function Signup() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: `url(${bgImage}) center/cover no-repeat` }}>
-            <div class='header-logo' style={{ position: 'absolute', top: '20px', left: '20px' }}>
-                <img src={PU} alt="PU Logo" style={{ width: '120px', height: '110px', marginBottom: '24px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }} />
-            </div>
-            <div style={{ display: 'flex', boxShadow: '0 4px 24px rgba(0,0,0,0.08)', borderRadius: '16px', overflow: 'hidden', background: '#fff', width: '900px', maxWidth: '95%' }}>
-                <div style={{ flex: 1.2, padding: '10px 50px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <p style={{ marginBottom: '0px', marginTop: '30px', fontSize: '2.1rem', opacity: 0.9, fontFamily: 'unset', fontWeight: 600}}>Pondicherry University</p>
-                    <p style={{ marginTop: '0px', fontSize: '0.9rem', opacity: 0.7 }}>Join the platform to manage your publications and profile</p>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        <label style={{ fontWeight: 500 }}>Name</label>
-                        <input name="name" type="text" placeholder="Name" value={form.name} onChange={handleChange} required style={{ padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem' }} />
-                        <label style={{ fontWeight: 500 }}>Role</label>
-                        <select name="role" value={form.role} onChange={handleChange} required style={{ padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', backgroundColor: '#fff' }}>
-                            <option value="faculty">Faculty Member</option>
-                            <option value="guest_faculty">Guest Faculty</option>
-                            <option value="dean">Dean of Department</option>
-                            <option value="hod">Head of Department (HOD)</option>
-                        </select>
-                        <label style={{ fontWeight: 500 }}>Email</label>
-                        <input
-                            name="email"
-                            type="email"
-                            placeholder="Email (e.g., @pondiuni.ac.in)"
-                            value={form.email}
-                            onChange={handleChange}
-                            required
-                            style={{
-                                padding: '10px',
-                                borderRadius: '8px',
-                                border: `1px solid ${form.email && !validateEmail(form.email) ? '#ef4444' : '#cbd5e1'}`,
-                                fontSize: '0.9rem'
-                            }}
-                        />
-                        {form.email && !validateEmail(form.email) && (
-                            <span style={{ fontSize: '0.8rem', color: '#ef4444', marginTop: '2px' }}>
-                                Please use a university email (@pondiuni.ac.in)
-                            </span>
-                        )}
-                        <label style={{ fontWeight: 500 }}>Password</label>
-                        <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required style={{ padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem' }} />
-                        <label style={{ fontWeight: 500 }}>Confirm Password</label>
-                        <input name="confirmPassword" type="password" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required style={{ padding: '10px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem' }} />
-                        <button type="submit" style={{ background: 'linear-gradient(90deg, #6366f1 60%, #818cf8 100%)', color: '#fff', border: 'none', borderRadius: '8px', padding: '12px', fontWeight: 600, fontSize: '1.1rem', marginTop: '10px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(99,102,241,0.10)' }}>Signup</button>
-                    </form>
-                    <div style={{ margin: '15px', marginBottom: '15px', textAlign: 'center' }}>
-                        Already have an account? <Link to="/login" style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'none' }}>Login</Link>
-                    </div>
-                </div>
-                {/* Left Side - Branding */}
-                <div style={{ flex: 1, background: 'linear-gradient(120deg, #787af7ff 60%, #818cf8 100%)', color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 30px' }}>
-                    <img src={FacultyIcon} alt="Faculty Icon" style={{ width: '200px', height: '200px', marginBottom: '20px', borderRadius: '12px' }}></img>
-                    <h2 style={{ fontWeight: 700, fontSize: '2rem', marginBottom: '8px' }}>
-                        {form.role === 'hod' ? 'HOD Signup' : 'Faculty Signup'}
-                    </h2>
-                    <p style={{ textAlign: 'center', opacity: 0.9, fontSize: '0.95rem' }}>
-                        {form.role === 'hod'
-                            ? 'Create your HOD account to manage faculty and approve submissions'
-                            : 'Create your faculty account to manage publications and profile'
+        <>
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                    @keyframes fadeInUp {
+                        from {
+                            opacity: 0;
+                            transform: translateY(30px);
                         }
-                    </p>
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    @keyframes float {
+                        0%, 100% { transform: translateY(0px); }
+                        50% { transform: translateY(-20px); }
+                    }
+                    .signup-container {
+                        min-height: 100vh;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        padding: 20px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .signup-container::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: url(${bgImage}) center/cover no-repeat;
+                        opacity: 0.15;
+                        z-index: 0;
+                    }
+                    .signup-box {
+                        display: flex;
+                        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                        border-radius: 24px;
+                        overflow: hidden;
+                        background: rgba(255, 255, 255, 0.98);
+                        backdrop-filter: blur(20px);
+                        width: 950px;
+                        max-width: 95%;
+                        animation: fadeInUp 0.6s ease-out;
+                        position: relative;
+                        z-index: 1;
+                        border: 1px solid rgba(255, 255, 255, 0.5);
+                    }
+                    .signup-form-container {
+                        flex: 1.3;
+                        padding: 40px 50px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        background: #ffffff;
+                    }
+                    .signup-branding {
+                        flex: 1;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: #fff;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 50px 40px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .signup-branding::before {
+                        content: '';
+                        position: absolute;
+                        top: -50%;
+                        left: -50%;
+                        width: 200%;
+                        height: 200%;
+                        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                        animation: float 6s ease-in-out infinite;
+                    }
+                    .signup-branding img {
+                        position: relative;
+                        z-index: 1;
+                    }
+                    .header-logo-signup {
+                        position: absolute;
+                        top: 30px;
+                        left: 30px;
+                        z-index: 10;
+                        animation: fadeInUp 0.8s ease-out 0.2s both;
+                    }
+                    .header-logo-signup img {
+                        width: 90px;
+                        height: 85px;
+                        border-radius: 16px;
+                        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+                        background: white;
+                        padding: 8px;
+                        transition: transform 0.3s ease;
+                    }
+                    .header-logo-signup img:hover {
+                        transform: scale(1.05);
+                    }
+                    .signup-input {
+                        padding: 12px 14px;
+                        border-radius: 12px;
+                        border: 2px solid #e5e7eb;
+                        fontSize: 0.9rem;
+                        transition: all 0.3s ease;
+                        background: #f9fafb;
+                    }
+                    .signup-input:focus {
+                        outline: none;
+                        border-color: #667eea;
+                        background: #ffffff;
+                        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+                    }
+                    .signup-btn {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        padding: 14px;
+                        font-weight: 600;
+                        font-size: 1.05rem;
+                        margin-top: 10px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                    }
+                    .signup-btn:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+                    }
+                    .signup-btn:active {
+                        transform: translateY(0);
+                    }
+                    @media (max-width: 768px) {
+                        .signup-container {
+                            padding: 10px;
+                        }
+                        .signup-box {
+                            flex-direction: column;
+                            width: 100%;
+                            max-width: 500px;
+                            border-radius: 20px;
+                        }
+                        .signup-branding {
+                            padding: 25px 20px 20px 20px;
+                            order: -1;
+                        }
+                        .signup-branding img {
+                            width: 100px !important;
+                            height: 100px !important;
+                            margin-bottom: 16px !important;
+                        }
+                        .signup-branding h2 {
+                            font-size: 1.4rem !important;
+                            margin-bottom: 0 !important;
+                        }
+                        .signup-branding p {
+                            display: none;
+                        }
+                        .signup-form-container {
+                            padding: 25px 20px 30px 20px;
+                        }
+                        .signup-form-container > div:first-child {
+                            margin-bottom: 12px !important;
+                        }
+                        .signup-form-container > div:first-child h1 {
+                            font-size: 1.6rem !important;
+                            margin-bottom: 4px !important;
+                        }
+                        .signup-form-container > div:first-child p {
+                            font-size: 0.9rem !important;
+                        }
+                        .signup-form-container form {
+                            margin-top: 12px !important;
+                            gap: 10px !important;
+                        }
+                        .signup-input {
+                            width: 100% !important;
+                            box-sizing: border-box;
+                        }
+                        .header-logo-signup {
+                            top: 12px;
+                            left: 12px;
+                        }
+                        .header-logo-signup img {
+                            width: 55px !important;
+                            height: 52px !important;
+                        }
+                    }
+                    @media (max-width: 480px) {
+                        .signup-form-container {
+                            padding: 20px 18px 25px 18px;
+                        }
+                        .signup-form-container > div:first-child h1 {
+                            font-size: 1.4rem !important;
+                        }
+                        .signup-branding {
+                            padding: 20px 18px 18px 18px;
+                        }
+                        .signup-branding img {
+                            width: 90px !important;
+                            height: 90px !important;
+                            margin-bottom: 12px !important;
+                        }
+                        .signup-branding h2 {
+                            font-size: 1.3rem !important;
+                        }
+                    }
+                `
+            }} />
+            <div className="signup-container">
+                <div className='header-logo-signup'>
+                    <img src={PU} alt="PU Logo" />
                 </div>
-                {/* Right Side - Form */}
+                <div className="signup-box">
+                    <div className="signup-branding">
+                        <img src={FacultyIcon} alt="Faculty Icon" style={{ width: '180px', height: '180px', marginBottom: '32px', borderRadius: '20px', boxShadow: '0 20px 50px rgba(0,0,0,0.3)', animation: 'float 3s ease-in-out infinite' }}></img>
+                        <h2 style={{ fontWeight: 700, fontSize: '2.2rem', marginBottom: '12px', textShadow: '0 2px 10px rgba(0,0,0,0.2)', zIndex: 1 }}>
+                            {form.role === 'hod' ? 'HOD Registration' : 'Faculty Registration'}
+                        </h2>
+                        <p style={{ textAlign: 'center', fontSize: '1rem', opacity: 0.95, lineHeight: '1.6', maxWidth: '300px', zIndex: 1 }}>
+                            {form.role === 'hod'
+                                ? 'Register as Head of Department to manage faculty profiles and approve department publications'
+                                : 'Join our platform to manage your publications, research, and academic profile'
+                            }
+                        </p>
+                    </div>
+                    <div className="signup-form-container">
+                        <div style={{ marginBottom: '12px' }}>
+                            <h1 style={{ fontSize: '2.2rem', fontWeight: 700, marginBottom: '8px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.02em' }}>Create Account</h1>
+                            <p style={{ fontSize: '1.05rem', color: '#6b7280', marginTop: '0' }}>
+                                Join Pondicherry University's Faculty Platform
+                            </p>
+                        </div>
+                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '20px' }}>
+                            <div>
+                                <label style={{ fontWeight: 600, fontSize: '0.85rem', color: '#374151', display: 'block', marginBottom: '6px' }}>Full Name</label>
+                                <input className="signup-input" name="name" type="text" placeholder="Enter your full name" value={form.name} onChange={handleChange} required style={{ width: '100%', boxSizing: 'border-box' }} />
+                            </div>
+                            <div>
+                                <label style={{ fontWeight: 600, fontSize: '0.85rem', color: '#374151', display: 'block', marginBottom: '6px' }}>Role</label>
+                                <select className="signup-input" name="role" value={form.role} onChange={handleChange} required style={{ cursor: 'pointer', width: '100%', boxSizing: 'border-box' }}>
+                                    <option value="faculty">Faculty Member</option>
+                                    <option value="guest_faculty">Guest Faculty</option>
+                                    <option value="dean">Dean of Department</option>
+                                    <option value="hod">Head of Department (HOD)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style={{ fontWeight: 600, fontSize: '0.85rem', color: '#374151', display: 'block', marginBottom: '6px' }}>University Email</label>
+                                <input
+                                    className="signup-input"
+                                    name="email"
+                                    type="email"
+                                    placeholder="your.email@pondiuni.ac.in"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    required
+                                    style={{
+                                        borderColor: form.email && !validateEmail(form.email) ? '#ef4444' : '#e5e7eb',
+                                        width: '100%',
+                                        boxSizing: 'border-box'
+                                    }}
+                                />
+                                {form.email && !validateEmail(form.email) && (
+                                    <span style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block' }}>
+                                        ⚠️ Please use a university email (@pondiuni.ac.in)
+                                    </span>
+                                )}
+                            </div>
+                            <div>
+                                <label style={{ fontWeight: 600, fontSize: '0.85rem', color: '#374151', display: 'block', marginBottom: '6px' }}>Password</label>
+                                <input className="signup-input" name="password" type="password" placeholder="Create a strong password" value={form.password} onChange={handleChange} required style={{ width: '100%', boxSizing: 'border-box' }} />
+                            </div>
+                            <div>
+                                <label style={{ fontWeight: 600, fontSize: '0.85rem', color: '#374151', display: 'block', marginBottom: '6px' }}>Confirm Password</label>
+                                <input className="signup-input" name="confirmPassword" type="password" placeholder="Confirm your password" value={form.confirmPassword} onChange={handleChange} required style={{ width: '100%', boxSizing: 'border-box' }} />
+                            </div>
+                            <button type="submit" className="signup-btn">Create Account</button>
+                        </form>
+                        {message && (
+                            <div style={{ background: '#fee2e2', border: '1px solid #fecaca', color: '#dc2626', padding: '12px 16px', borderRadius: '10px', marginTop: '16px', fontSize: '0.9rem', fontWeight: 500 }}>
+                                {message}
+                            </div>
+                        )}
+                        <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '0.95rem', color: '#6b7280' }}>
+                            Already have an account? <Link to="/login" style={{ color: '#667eea', fontWeight: 600, textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.target.style.color = '#764ba2'} onMouseLeave={(e) => e.target.style.color = '#667eea'}>Sign In</Link>
+                        </div>
+                    </div>
+                    {/* Right Side - Branding */}
+                    
+                </div>
             </div>
 
             {/* Success Popup */}
@@ -297,7 +533,7 @@ function Signup() {
                     }
                 `
             }} />
-        </div>
+        </>
     );
 }
 
