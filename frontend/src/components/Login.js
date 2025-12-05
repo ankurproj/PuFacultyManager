@@ -193,12 +193,14 @@ function Login() {
                     @media (max-width: 768px) {
                         .login-container {
                             padding: 10px;
+                            padding-top: 75px;
                         }
                         .login-box {
                             flex-direction: column;
                             width: 100%;
                             max-width: 500px;
                             border-radius: 20px;
+                            margin-top: 0;
                         }
                         .login-branding {
                             padding: 25px 20px 20px 20px;
@@ -246,6 +248,9 @@ function Login() {
                         }
                     }
                     @media (max-width: 480px) {
+                        .login-container {
+                            padding-top: 70px;
+                        }
                         .login-form-container {
                             padding: 20px 18px 25px 18px;
                         }

@@ -207,12 +207,14 @@ function Signup() {
                     @media (max-width: 768px) {
                         .signup-container {
                             padding: 10px;
+                            padding-top: 75px;
                         }
                         .signup-box {
                             flex-direction: column;
                             width: 100%;
                             max-width: 500px;
                             border-radius: 20px;
+                            margin-top: 0;
                         }
                         .signup-branding {
                             padding: 25px 20px 20px 20px;
@@ -261,6 +263,9 @@ function Signup() {
                         }
                     }
                     @media (max-width: 480px) {
+                        .signup-container {
+                            padding-top: 70px;
+                        }
                         .signup-form-container {
                             padding: 20px 18px 25px 18px;
                         }
