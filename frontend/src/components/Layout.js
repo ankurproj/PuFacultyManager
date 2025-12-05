@@ -14,6 +14,7 @@ function Layout({ children }) {
   });
   const [hoveredItem, setHoveredItem] = useState(null);
   const [userRole, setUserRole] = useState('faculty'); // Default to faculty
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -47,6 +48,27 @@ function Layout({ children }) {
       // ignore persistence errors
     }
   }, [sidebarOpen]);
+
+  // Handle window resize for mobile detection
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      // Close sidebar on mobile when resizing
+      if (mobile && sidebarOpen) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [sidebarOpen]);
+
+  // Close sidebar when clicking outside on mobile
+  const handleOverlayClick = () => {
+    if (isMobile && sidebarOpen) {
+      setSidebarOpen(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -87,9 +109,27 @@ function Layout({ children }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', position: 'relative', background: '#f3f4f6' }}>
+      {/* Mobile Overlay */}
+      {isMobile && sidebarOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 39,
+            backdropFilter: 'blur(2px)',
+            WebkitBackdropFilter: 'blur(2px)'
+          }}
+          onClick={handleOverlayClick}
+        />
+      )}
+
       {/* Sidebar */}
       <div style={{
-        width: sidebarOpen ? '270px' : '88px',
+        width: isMobile ? '270px' : (sidebarOpen ? '270px' : '88px'),
         background: 'linear-gradient(180deg, #eff6ff 0%, #dbeafe 35%, #e5e7eb 100%)',
         color: '#111827',
         transition: 'all 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -99,7 +139,9 @@ function Layout({ children }) {
         height: '100vh',
         zIndex: 40,
         borderRight: '1px solid rgba(148,163,184,0.35)',
-        boxShadow: '0 0 0 1px rgba(148,163,184,0.4), 10px 0 25px rgba(148,163,184,0.45)'
+        boxShadow: '0 0 0 1px rgba(148,163,184,0.4), 10px 0 25px rgba(148,163,184,0.45)',
+        left: isMobile ? (sidebarOpen ? '0' : '-270px') : '0',
+        transform: isMobile ? 'none' : 'translateX(0)'
       }}>
         {/* Header */}
         <div style={{
@@ -312,49 +354,104 @@ function Layout({ children }) {
       {/* Main Content Area */}
       <div style={{
         flex: 1,
-        marginLeft: sidebarOpen ? '270px' : '88px',
+        marginLeft: isMobile ? '0' : (sidebarOpen ? '270px' : '88px'),
         transition: 'margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
         minHeight: '100vh',
         position: 'relative',
         background: 'radial-gradient(circle at top, rgba(191,219,254,0.7) 0, transparent 50%), radial-gradient(circle at bottom, rgba(229,231,235,0.8) 0, transparent 55%)',
-        color: '#111827'
+        color: '#111827',
+        paddingTop: isMobile ? '60px' : '0'
       }}>
+        {/* Mobile Hamburger Button - Top Left Corner */}
+        {isMobile && (
+          <div
+            style={{
+              position: 'fixed',
+              top: '15px',
+              left: '15px',
+              zIndex: 30,
+              cursor: 'pointer',
+              color: '#111827',
+              borderRadius: '12px',
+              border: '1px solid rgba(148,163,184,0.8)',
+              width: '45px',
+              height: '45px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              transition: 'all 0.2s ease',
+              background: 'rgba(255,255,255,0.95)'
+            }}
+            onClick={() => setSidebarOpen(prev => !prev)}
+          >
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px'
+            }}>
+              <span style={{
+                width: '20px',
+                height: '2.5px',
+                borderRadius: '999px',
+                background: '#111827'
+              }} />
+              <span style={{
+                width: '20px',
+                height: '2.5px',
+                borderRadius: '999px',
+                background: '#111827'
+              }} />
+              <span style={{
+                width: '20px',
+                height: '2.5px',
+                borderRadius: '999px',
+                background: '#111827'
+              }} />
+            </div>
+          </div>
+        )}
+
         {/* Dashboard Icon - Top Right Corner */}
-        <div
-          style={{
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            zIndex: 1000,
-            cursor: 'pointer',
-            color: '#fff',
-            borderRadius: '999px',
-            border: '1px solid rgba(148,163,184,0.8)',
-            width: '50px',
-            height: '50px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 0 0 1px rgba(148,163,184,0.6), 0 14px 30px rgba(148,163,184,0.6)',
-            backdropFilter: 'blur(18px)',
-            WebkitBackdropFilter: 'blur(18px)',
-            transition: 'all 0.22s ease',
-            fontSize: '1.4rem',
-            background: 'radial-gradient(circle at 30% 0, rgba(239,246,255,0.95), transparent 55%), rgba(255,255,255,0.95)'
-          }}
-          onClick={() => navigate('/dashboard')}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-1px) scale(1.03)';
-            e.currentTarget.style.boxShadow = '0 0 0 1px rgba(59,130,246,0.9), 0 18px 40px rgba(148,163,184,0.9)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = '0 0 0 1px rgba(148,163,184,0.6), 0 14px 30px rgba(148,163,184,0.6)';
-          }}
-          title="Go to Dashboard"
-        >
-          🏠
-        </div>
+        {!isMobile && (
+          <div
+            style={{
+              position: 'fixed',
+              top: '20px',
+              right: '20px',
+              zIndex: 1000,
+              cursor: 'pointer',
+              color: '#fff',
+              borderRadius: '999px',
+              border: '1px solid rgba(148,163,184,0.8)',
+              width: '50px',
+              height: '50px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 0 0 1px rgba(148,163,184,0.6), 0 14px 30px rgba(148,163,184,0.6)',
+              backdropFilter: 'blur(18px)',
+              WebkitBackdropFilter: 'blur(18px)',
+              transition: 'all 0.22s ease',
+              fontSize: '1.4rem',
+              background: 'radial-gradient(circle at 30% 0, rgba(239,246,255,0.95), transparent 55%), rgba(255,255,255,0.95)'
+            }}
+            onClick={() => navigate('/dashboard')}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px) scale(1.03)';
+              e.currentTarget.style.boxShadow = '0 0 0 1px rgba(59,130,246,0.9), 0 18px 40px rgba(148,163,184,0.9)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = '0 0 0 1px rgba(148,163,184,0.6), 0 14px 30px rgba(148,163,184,0.6)';
+            }}
+            title="Go to Dashboard"
+          >
+            🏠
+          </div>
+        )}
 
         {children}
       </div>

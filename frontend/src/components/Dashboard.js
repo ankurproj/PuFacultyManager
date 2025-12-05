@@ -271,6 +271,59 @@ function Dashboard() {
 
   return (
     <Layout>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media (max-width: 768px) {
+            .app-page {
+              padding: 20px 16px !important;
+            }
+            .app-page-header {
+              flex-direction: column !important;
+              text-align: center !important;
+              gap: 20px !important;
+            }
+            .app-page-title {
+              font-size: 1.6rem !important;
+            }
+            .app-page-subtitle {
+              font-size: 0.95rem !important;
+            }
+            .app-profile-stats {
+              grid-template-columns: 1fr !important;
+              gap: 16px !important;
+            }
+            .app-card {
+              padding: 20px !important;
+            }
+            .dashboard-stat-card-header {
+              flex-direction: row !important;
+              align-items: flex-start !important;
+              gap: 10px !important;
+            }
+            .dashboard-stat-card-icon {
+              position: absolute !important;
+              top: 20px !important;
+              right: 20px !important;
+            }
+            .dashboard-stat-card-value {
+              font-size: 2.5rem !important;
+              margin-bottom: 12px !important;
+            }
+            .dashboard-stat-card-inner {
+              min-height: auto !important;
+              padding: 12px 14px !important;
+            }
+            .dashboard-quick-actions {
+              grid-template-columns: 1fr !important;
+              gap: 12px !important;
+            }
+            .dashboard-access-requests {
+              grid-template-columns: 1fr !important;
+              gap: 12px !important;
+            }
+          }
+        `
+      }} />
       <div className="app-page" style={{ padding: '32px 40px', minHeight: '100vh' }}>
         {/* Header with Profile Picture */}
         <div className="app-page-header" style={{ marginBottom: '28px', alignItems: 'center' }}>
@@ -347,7 +400,8 @@ function Dashboard() {
               style={{
                 background: 'linear-gradient(145deg, #6366f1 0%, #8b5cf6 40%, #ec4899 100%)',
                 color: '#fff',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                position: 'relative'
               }}
               onClick={() => navigate('/faculty')}
               onMouseEnter={(e) => {
@@ -358,19 +412,19 @@ function Dashboard() {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 10px 40px rgba(102, 126, 234, 0.3)';
               }}>
-              <div style={statCardHeader}>
+              <div style={statCardHeader} className="dashboard-stat-card-header">
                 <div>
                   <h3 style={statCardTitle}>Faculty Overview</h3>
                   <p style={statCardSubtitle}>Distribution by designation in your department</p>
                 </div>
-                <span style={statCardIcon}>👥</span>
+                <span style={statCardIcon} className="dashboard-stat-card-icon">👥</span>
               </div>
 
-              <div style={statCardValue}>
+              <div style={statCardValue} className="dashboard-stat-card-value">
                 {facultyStats.totalProfessors}
               </div>
 
-              <div style={statCardInner}>
+              <div style={statCardInner} className="dashboard-stat-card-inner">
 
                 {Object.entries(facultyStats.designationCounts).map(([designation, count]) => (
                   <div key={designation} style={{
@@ -398,7 +452,8 @@ function Dashboard() {
               style={{
                 background: 'linear-gradient(145deg, #0ea5e9 0%, #38bdf8 40%, #22c55e 100%)',
                 color: '#fff',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                position: 'relative'
               }}
               onClick={() => navigate('/publications')}
               onMouseEnter={(e) => {
@@ -409,19 +464,19 @@ function Dashboard() {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 10px 40px rgba(79, 172, 254, 0.3)';
               }}>
-              <div style={statCardHeader}>
+              <div style={statCardHeader} className="dashboard-stat-card-header">
                 <div>
                   <h3 style={statCardTitle}>Faculty Publications</h3>
                   <p style={statCardSubtitle}>Consolidated publications across all faculty</p>
                 </div>
-                <span style={statCardIcon}>📚</span>
+                <span style={statCardIcon} className="dashboard-stat-card-icon">📚</span>
               </div>
 
-              <div style={statCardValue}>
+              <div style={statCardValue} className="dashboard-stat-card-value">
                 {publicationsStats.totalPublications}
               </div>
 
-              <div style={statCardInner}>
+              <div style={statCardInner} className="dashboard-stat-card-inner">
                 <div style={{
                   fontSize: '0.9rem',
                   marginBottom: '8px',
@@ -465,7 +520,8 @@ function Dashboard() {
               style={{
                 background: 'linear-gradient(145deg, #f97316 0%, #facc15 45%, #22c55e 100%)',
                 color: '#fff',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                position: 'relative'
               }}
               onClick={() => navigate('/fellowship')}
               onMouseEnter={(e) => {
@@ -476,19 +532,19 @@ function Dashboard() {
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 10px 40px rgba(250, 112, 154, 0.3)';
               }}>
-              <div style={statCardHeader}>
+              <div style={statCardHeader} className="dashboard-stat-card-header">
                 <div>
                   <h3 style={statCardTitle}>Department Awards</h3>
                   <p style={statCardSubtitle}>Recognition and achievements across the department</p>
                 </div>
-                <span style={statCardIcon}>🏆</span>
+                <span style={statCardIcon} className="dashboard-stat-card-icon">🏆</span>
               </div>
 
-              <div style={statCardValue}>
+              <div style={statCardValue} className="dashboard-stat-card-value">
                 {awardsStats.totalAwards}
               </div>
 
-              <div style={statCardInner}>
+              <div style={statCardInner} className="dashboard-stat-card-inner">
                 <div style={{
                   fontSize: '0.9rem',
                   marginBottom: '8px',
@@ -566,7 +622,9 @@ function Dashboard() {
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
               gap: '20px'
-            }}>
+            }}
+            className="dashboard-access-requests"
+            >
               {accessRequestsCount.incoming > 0 && (
                 <div
                   onClick={() => navigate('/access-requests')}
@@ -663,7 +721,9 @@ function Dashboard() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: '15px',
-          }}>
+          }}
+          className="dashboard-quick-actions"
+          >
             <button
               onClick={() => navigate('/faculty')}
               className="app-btn app-btn-primary"
