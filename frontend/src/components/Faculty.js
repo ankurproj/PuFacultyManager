@@ -144,13 +144,51 @@ function Faculty() {
   return (
     <div>
       <Layout>
-        <div style={{
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @media (max-width: 768px) {
+              .faculty-container {
+                padding: 20px 16px !important;
+              }
+              .faculty-header h1 {
+                font-size: 1.8rem !important;
+              }
+              .faculty-header p {
+                font-size: 1rem !important;
+              }
+              .faculty-filters {
+                flex-direction: column !important;
+                gap: 12px !important;
+              }
+              .faculty-filters > div {
+                width: 100% !important;
+              }
+              .faculty-filters input,
+              .faculty-filters select {
+                width: 100% !important;
+              }
+              .faculty-table-container {
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+              }
+              .faculty-table {
+                min-width: 800px !important;
+              }
+              .faculty-table th,
+              .faculty-table td {
+                padding: 12px 10px !important;
+                font-size: 0.85rem !important;
+              }
+            }
+          `
+        }} />
+        <div className="faculty-container" style={{
           padding: '40px',
           maxWidth: '1400px',
           margin: '0 auto'
         }}>
           {/* Page Header */}
-          <div style={{
+          <div className="faculty-header" style={{
             marginBottom: '40px',
           }}>
             <h1 style={{
@@ -178,7 +216,7 @@ function Faculty() {
             padding: '30px',
             marginBottom: '30px'
           }}>
-            <div style={{
+            <div className="faculty-filters" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
               gap: '20px',
@@ -308,13 +346,13 @@ function Faculty() {
           </div>
 
           {/* Faculty Table */}
-          <div style={{
+          <div className="faculty-table-container" style={{
             background: '#fff',
             borderRadius: '20px',
             boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
             overflow: 'hidden'
           }}>
-            <table style={{
+            <table className="faculty-table" style={{
               width: '100%',
               borderCollapse: 'collapse'
             }}>

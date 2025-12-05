@@ -1261,18 +1261,48 @@ function Profile() {
 
   return (
     <Layout>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media (max-width: 768px) {
+            .profile-container {
+              padding: 20px 16px !important;
+            }
+            .profile-header {
+              padding: 10px 16px 20px !important;
+            }
+            .profile-title {
+              font-size: 1.8rem !important;
+            }
+            .profile-content {
+              padding: 16px !important;
+            }
+            .profile-section {
+              padding: 16px !important;
+            }
+            table {
+              font-size: 0.85rem !important;
+            }
+            th, td {
+              padding: 6px !important;
+            }
+          }
+        `
+      }} />
       <div
+        className="profile-container"
         style={{
           minHeight: "100vh",
           padding: "40px 20px",
         }}
       >
         <div
+          className="profile-header"
           style={{
             padding: "10px 30px 30px",
           }}
         >
           <h1
+            className="profile-title"
             style={{
               fontSize: "2.5rem",
               fontWeight: 800,
